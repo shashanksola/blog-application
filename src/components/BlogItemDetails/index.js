@@ -1,42 +1,44 @@
-import { Component } from 'react'
 import { Audio } from 'react-loader-spinner'
+import { useParams } from 'react-router-dom'
 
 import './index.css'
+import { useState, useEffect } from 'react'
 
-class BlogItemDetails extends Component {
-  state = { blogData: {}, isLoading: true }
 
-  componentDidMount() {
-    this.getBlogItemData()
-  }
 
-  getBlogItemData = async () => {
-    const { match } = this.props
-    const { params } = match
-    const { id } = params
+const BlogItemDetails = () => {
+  const { id } = useParams()
+  const [blogData, setBlogData] = useState({});
+  const [isLoading, setIsLoading] = useState(true)
 
-    const response = await fetch(`https://apis.ccbp.in/blogs/${id}`)
-    const data = await response.json()
+  useEffect(() => {
+    async function getBlogItemData() {
 
-    const updatedData = {
-      title: data.title,
-      imageUrl: data.image_url,
-      content: data.content,
-      avatarUrl: data.avatar_url,
-      author: data.author,
+      const response = await fetch(`https://apis.ccbp.in/blogs/${id}`)
+      const data = await response.json()
+
+      const updatedData = {
+        title: data.title,
+        imageUrl: data.image_url,
+        content: data.content,
+        avatarUrl: data.avatar_url,
+        author: data.author,
+      }
+      setBlogData(updatedData)
+      setIsLoading(false)
     }
-    this.setState({ blogData: updatedData, isLoading: false })
-  }
+    getBlogItemData();
+  })
 
-  renderBlogItemDetails = () => {
-    const { blogData } = this.state
+
+  const renderBlogItemDetails = () => {
     const { title, imageUrl, content, avatarUrl, author } = blogData
 
     return (
-      <div className="blog-info">
-        <h2 className="blog-details-title">{title}</h2>
+      <div style={{display:'flex', flexDirection: 'column'}}>
+        <h2>{title}</h2>
         <div className="author-details">
-          <img className="author-pic" src={avatarUrl} alt={author} />
+          <img className="avatar" src={avatarUrl} alt={author} />
           <p className="details-author-name">{author}</p>
         </div>
         <img className="blog-image" src={imageUrl} alt={title} />
@@ -45,27 +47,23 @@ class BlogItemDetails extends Component {
     )
   }
 
-  render() {
-    const { isLoading } = this.state
-
-    return (
-      <div className="blog-container">
-        {isLoading ? (
-          <Audio
-            height="80"
-            width="80"
-            radius="9"
-            color="green"
-            ariaLabel="three-dots-loading"
-            wrapperStyle
-            wrapperClass
-          />
-        ) : (
-          this.renderBlogItemDetails()
-        )}
-      </div>
-    )
-  }
+  return (
+    <div className="blog-container">
+      {isLoading ? (
+        <Audio
+          height="80"
+          width="80"
+          radius="9"
+          color="green"
+          ariaLabel="three-dots-loading"
+          wrapperStyle
+          wrapperClass
+        />
+      ) : (
+        renderBlogItemDetails()
+      )}
+    </div>
+  )
 }
 
 export default BlogItemDetails

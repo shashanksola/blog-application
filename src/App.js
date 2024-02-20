@@ -14,7 +14,7 @@ const App = () => (
   <div className="app-container">
     <div className="responsive-container">
       <Header />
-      <div className="app-body">
+      <div>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

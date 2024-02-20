@@ -1,1 +1,40 @@
 /* Write your CSS code here */
+
+.item-container {
+    border: 2px solid black;
+    width: 70vw;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    margin: 8px;
+}
+
+.avatar {
+    width: 50px;
+    border-radius: 50px;
+    margin-right: 16px;
+}
+
+.main-image {
+    width: 20vw;
+    height: 200px;
+    margin-right: 16px;
+}
+
+.author-info {
+    display: flex;
+}
+
+@media (max-width: 800px) {
+    .item-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .main-image {
+        width: 100%;
+        background-image: cover;
+    }
+    
+}
